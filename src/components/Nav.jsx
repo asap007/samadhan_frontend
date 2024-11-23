@@ -1,7 +1,7 @@
 // components/Nav.jsx
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Zap, BarChart, History, ShoppingBag, Lightbulb } from 'lucide-react';
+import { Zap, BarChart, History, ShoppingBag, Lightbulb, FileText } from 'lucide-react';
 
 const Nav = () => {
   const location = useLocation();
@@ -19,7 +19,13 @@ const Nav = () => {
       key: 'history', 
       icon: ShoppingBag,
       path: '/suggestion-advisor'
-    }
+    },
+    {
+        name: 'PDF Advisor',
+        key: 'pdf',
+        icon: FileText,
+        path: '/pdf-advisor'
+      }
   ];
 
   return (
