@@ -10,7 +10,7 @@ import {
   History,    // Add these two
   Settings,   // new imports
 } from 'lucide-react';
-import axios from 'axios';
+import axios from 'axios'; 
 
 const FinancialAdvicePage = () => {
   const [loading, setLoading] = useState(false);
@@ -87,48 +87,7 @@ const FinancialAdvicePage = () => {
   };
 
 
-  const Nav = () => {
-    const [activeTab, setActiveTab] = useState('dashboard');
-    
-    return (
-      <nav className="w-full bg-white shadow-lg fixed top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-between h-16">
-            {/* Logo section */}
-            <div className="flex items-center">
-              <div className="flex-shrink-0 flex items-center">
-                <Zap className="h-8 w-8 text-emerald-500" />
-                <span className="ml-2 text-xl font-bold text-gray-800">FinWise</span>
-              </div>
-            </div>
-            
-            {/* Navigation Links */}
-            <div className="flex items-center">
-              <div className="flex space-x-4">
-                {[
-                  { name: 'Fintech Advisor', key: 'dashboard', icon: BarChart },
-                  { name: ' Advisor', key: 'history', icon: History },
-                ].map(({ name, key, icon: Icon }) => (
-                  <button
-                    key={key}
-                    onClick={() => setActiveTab(key)}
-                    className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors
-                      ${activeTab === key 
-                        ? 'bg-emerald-100 text-emerald-700' 
-                        : 'text-gray-600 hover:bg-gray-100'
-                      }`}
-                  >
-                    <Icon className="mr-2 h-5 w-5" />
-                    {name}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
-    );
-  };
+  
   const handlePaymentOptionToggle = (category, optionId) => {
     setFormData(prev => ({
       ...prev,
@@ -237,9 +196,8 @@ const FinancialAdvicePage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
-      <Nav />
       <div className="w-full max-w-4xl bg-white rounded-3xl shadow-2xl overflow-hidden">
-        <div className="bg-gradient-to-r from-emerald-600 to-teal-700 p-6 flex items-center">
+        <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-6 flex items-center">
           <Zap className="h-10 w-10 text-yellow-300 mr-4" />
           <h1 className="text-3xl font-bold text-white">
             Financial Advisory Platform
@@ -473,7 +431,7 @@ const FinancialAdvicePage = () => {
 
               <button
                 type="submit"
-                className="w-full flex items-center justify-center bg-gradient-to-r from-emerald-600 to-teal-700 text-white py-4 rounded-xl font-bold tracking-wide hover:opacity-90 transition-all focus:outline-none focus:ring-4 focus:ring-emerald-300 disabled:opacity-50"
+                className="w-full flex items-center justify-center bg-gradient-to-r from-blue-600 to-blue-800 text-white py-4 rounded-xl font-bold tracking-wide hover:opacity-90 transition-all focus:outline-none focus:ring-4 focus:ring-emerald-300 disabled:opacity-50"
                 disabled={loading}
               >
                 {loading ? (

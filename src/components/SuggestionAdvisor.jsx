@@ -17,46 +17,6 @@ import {
 } from 'lucide-react';
 
 
-const Nav = () => {
-  const [activeTab, setActiveTab] = useState('advisor');
-  
-  return (
-    <nav className="w-full bg-white shadow-lg fixed top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between h-16">
-          <div className="flex items-center">
-            <div className="flex-shrink-0 flex items-center">
-              <Zap className="h-8 w-8 text-blue-500" />
-              <span className="ml-2 text-xl font-bold text-gray-800">FinWise</span>
-            </div>
-          </div>
-          
-          <div className="flex items-center">
-            <div className="flex space-x-4">
-              {[
-                { name: 'Fintech Advisor', key: 'dashboard', icon: BarChart },
-                { name: 'Product Advisor', key: 'advisor', icon: ShoppingBag },
-              ].map(({ name, key, icon: Icon }) => (
-                <button
-                  key={key}
-                  onClick={() => setActiveTab(key)}
-                  className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors
-                    ${activeTab === key
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'text-gray-600 hover:bg-gray-100'
-                    }`}
-                >
-                  <Icon className="mr-2 h-5 w-5" />
-                  {name}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
-  );
-};
 
 const ProductAdvisor = () => {
   const [step, setStep] = useState(1);
@@ -118,7 +78,7 @@ const ProductAdvisor = () => {
         throw new Error('No data received from server');
       }
   
-      setAdvice(data);
+      setAdvice(data); // Just set the data directly, don't try to unnest it
       setStep(3);
     } catch (error) {
       console.error('Error:', error);
@@ -332,9 +292,174 @@ const ProductAdvisor = () => {
                     </ul>
                   </div>
                 )}
+{advice.advice.productRecommendations.primaryChoice.reasonsToBuy && (
+                <div className="mt-4">
+                  <p className="font-medium text-blue-800 mb-2">Why Buy:</p>
+                  <ul className="space-y-2">
+                    {advice.advice.productRecommendations.primaryChoice.reasonsToBuy.map((reason, index) => (
+                      <li key={index} className="flex items-center">
+                        <span className="w-2 h-2 bg-green-500 rounded-full mr-2" />
+                        {reason}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {advice.advice.productRecommendations.alternatives && advice.advice.productRecommendations.alternatives.length > 0 && (
+            <div>
+              <h4 className="font-semibold text-gray-700 mb-4">Alternatives</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {advice.advice.productRecommendations.alternatives.map((alt, index) => (
+                  <div key={index} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+                    <p className="font-medium">{alt.name}</p>
+                    <p className="text-blue-600 mt-1">₹{alt.price}</p>
+                    {alt.keyDifferences && (
+                      <div className="mt-2">
+                        <p className="text-sm text-gray-600">Key Differences:</p>
+                        <ul className="mt-1 space-y-1">
+                          {alt.keyDifferences.map((diff, idx) => (
+                            <li key={idx} className="text-sm text-gray-700">{diff}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
+)}
+        </Card>
+
+        {advice.advice.financialAnalysis && (
+          <Card>
+            <h3 className="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+              <PieChart className="mr-2 text-green-500" />
+              Financial Analysis
+            </h3>
+            
+            {advice.advice.financialAnalysis.affordabilityScore && advice.advice.financialAnalysis.monthlyImpact && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="bg-green-50 rounded-lg p-6">
+                  <p className="font-medium text-green-800">Affordability Score</p>
+                  <div className="flex items-baseline mt-2">
+                    <p className="text-3xl font-bold text-green-600">
+                      {advice.advice.financialAnalysis.affordabilityScore}
+                    </p>
+                    <p className="text-green-600 ml-1">/10</p>
+                  </div>
+                </div>
+                
+                <div className="bg-green-50 rounded-lg p-6">
+                  <p className="font-medium text-green-800">Monthly Impact</p>
+                  <p className="text-2xl font-semibold text-green-600 mt-2">
+                    {(advice.advice.financialAnalysis.monthlyImpact.percentage * 100).toFixed(1)}%
+                  </p>
+                  <p className="text-green-600 mt-1">
+                    Sustainable for {advice.advice.financialAnalysis.monthlyImpact.sustainabilityPeriod}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {advice.advice.financialAnalysis.savingsSuggestions && advice.advice.financialAnalysis.savingsSuggestions.length > 0 && (
+              <div className="mb-6">
+                <h4 className="font-semibold text-gray-700 mb-4">Savings Suggestions</h4>
+                <ul className="space-y-3">
+                  {advice.advice.financialAnalysis.savingsSuggestions.map((suggestion, index) => (
+                    <li key={index} className="flex items-start">
+                      <span className="w-2 h-2 bg-green-500 rounded-full mr-2 mt-2" />
+                      <span>{suggestion}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {advice.advice.financialAnalysis.budgetingTips && advice.advice.financialAnalysis.budgetingTips.length > 0 && (
+              <div>
+                <h4 className="font-semibold text-gray-700 mb-4">Budgeting Tips</h4>
+                <ul className="space-y-3">
+                  {advice.advice.financialAnalysis.budgetingTips.map((tip, index) => (
+                    <li key={index} className="flex items-start">
+                      <span className="w-2 h-2 bg-blue-500 rounded-full mr-2 mt-2" />
+                      <span>{tip}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </Card>
+)}
+
+        {(advice.advice.marketInsights || advice.advice.financialAdvice) && (
+          <Card>
+            <h3 className="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+              <TrendingUp className="mr-2 text-purple-500" />
+              Market & Financial Insights
+            </h3>
+            
+            {advice.advice.marketInsights && advice.advice.marketInsights.priceHistory && (
+              <div className="bg-purple-50 rounded-lg p-6 mb-6">
+                <h4 className="font-medium text-purple-800 mb-2">Price Trends</h4>
+                <p className="text-lg">{advice.advice.marketInsights.priceHistory.trend}</p>
+                <p className="text-purple-600 mt-2">
+                  Best time to buy: {advice.advice.marketInsights.priceHistory.bestTimeToBuy}
+                </p>
+              </div>
+            )}
+
+            {advice.advice.marketInsights && advice.advice.marketInsights.futureConsiderations && advice.advice.marketInsights.futureConsiderations.length > 0 && (
+              <div className="mb-6">
+                <h4 className="font-semibold text-gray-700 mb-4">Future Considerations</h4>
+                <ul className="space-y-3">
+                  {advice.advice.marketInsights.futureConsiderations.map((consideration, index) => (
+                    <li key={index} className="flex items-start">
+                      <span className="w-2 h-2 bg-purple-500 rounded-full mr-2 mt-2" />
+                      <span>{consideration}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {advice.advice.financialAdvice && (
+              <>
+                {advice.advice.financialAdvice.immediateSteps && advice.advice.financialAdvice.immediateSteps.length > 0 && (
+                  <div className="mb-6">
+                    <h4 className="font-semibold text-gray-700 mb-4">Immediate Steps</h4>
+                    <ul className="space-y-3">
+                      {advice.advice.financialAdvice.immediateSteps.map((step, index) => (
+                        <li key={index} className="flex items-start">
+                          <span className="w-2 h-2 bg-blue-500 rounded-full mr-2 mt-2" />
+                          <span>{step}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {advice.advice.financialAdvice.risksToConsider && advice.advice.financialAdvice.risksToConsider.length > 0 && (
+                  <div className="bg-red-50 rounded-lg p-6">
+                    <h4 className="font-semibold text-red-800 mb-4">Risks to Consider</h4>
+                    <ul className="space-y-3">
+                      {advice.advice.financialAdvice.risksToConsider.map((risk, index) => (
+                        <li key={index} className="flex items-start">
+                          <span className="w-2 h-2 bg-red-500 rounded-full mr-2 mt-2" />
+                          <span>{risk}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </>
+            )}
+          </Card>
+        )}
+      </>
+    )}
 
           <div className="flex gap-4">
             <SecondaryButton onClick={() => {
@@ -353,14 +478,10 @@ const ProductAdvisor = () => {
               Start New Search
             </SecondaryButton>
           </div>
-        </>
-      )}
-    </motion.div>
+            </motion.div>
   );
 
   return (
-    <>
-        <Nav />
     <div className="min-h-screen bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -438,8 +559,7 @@ const ProductAdvisor = () => {
         </div>
       </motion.div>
     </div>
-    </>
-  );
+      );
 };
 
 
