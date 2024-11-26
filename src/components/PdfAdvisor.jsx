@@ -92,7 +92,7 @@ const PdfAdvisor = () => {
       formData.append('file', uploadedFile);
       formData.append('message', userMessage);
 
-      const response = await fetch('http://localhost:5000/api/advice/pdf-advice', {
+      const response = await fetch('https://samadhan-backend.onrender.com/api/advice/pdf-advice', {
         method: 'POST',
         body: formData,
       });

@@ -62,7 +62,7 @@ const ProductAdvisor = () => {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:5000/api/advice/product-advice', {
+      const response = await fetch('https://samadhan-backend.onrender.com/api/advice/product-advice', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

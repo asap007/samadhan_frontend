@@ -123,7 +123,7 @@ const FinancialAdvicePage = () => {
   const getAdvice = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/advice/financial-strategy', formData);
+      const response = await axios.post('https://samadhan-backend.onrender.com/api/advice/financial-strategy', formData);
       setAdvice(response.data);
     } catch (error) {
       console.error('Error fetching advice:', error);
@@ -429,20 +429,22 @@ const FinancialAdvicePage = () => {
                 </div>
               )}
 
-              <button
-                type="submit"
-                className="w-full flex items-center justify-center bg-gradient-to-r from-blue-600 to-blue-800 text-white py-4 rounded-xl font-bold tracking-wide hover:opacity-90 transition-all focus:outline-none focus:ring-4 focus:ring-emerald-300 disabled:opacity-50"
-                disabled={loading}
-              >
-                {loading ? (
-                  <>
-                    <RefreshCw className="mr-2 animate-spin" size={20} />
-                    Analyzing Finances...
-                  </>
-                ) : (
-                  'Get Financial Advice'
-                )}
-              </button>
+              {activeSection === 'financial' && (
+                <button
+                  type="submit"
+                  className="w-full flex items-center justify-center bg-gradient-to-r from-blue-600 to-blue-800 text-white py-4 rounded-xl font-bold tracking-wide hover:opacity-90 transition-all focus:outline-none focus:ring-4 focus:ring-emerald-300 disabled:opacity-50"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <>
+                      <RefreshCw className="mr-2 animate-spin" size={20} />
+                      Analyzing Finances...
+                    </>
+                  ) : (
+                    'Get Financial Advice'
+                  )}
+                </button>
+              )}
             </form>
           </div>
         </div>
