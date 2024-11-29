@@ -224,6 +224,7 @@ const ProductAdvisor = () => {
           >
             <option value="">Select product type</option>
             <option value="smartphone">Smartphone</option>
+            <option value="smartphone">Tablet</option>
             <option value="laptop">Laptop</option>
             <option value="car">Car</option>
             <option value="motorcycle">Motorcycle</option>
